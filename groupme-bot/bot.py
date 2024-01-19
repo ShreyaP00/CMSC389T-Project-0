@@ -80,11 +80,9 @@ def process_message(message):
     elif "good night" in text:
         sender_name = message.get("name", "Unknown")
         send_message(f"Good night, {sender_name}!")
-
-    # Play a Rock-Paper-Scissors game with the user
+    
     elif sender_id == my_user_id and "play" in text:
-        send_message("Okay! Let's play Rock-Paper-Scissors\n"
-                     "Enter:\nr for rock\np for paper\ns for scissors: ")
+        send_message("Okay! Let's play Rock-Paper-Scissors\nPlease enter r for rock, p for paper, or s for scissors: ")
         PLAY_GAME = True
     
     elif sender_id == my_user_id and PLAY_GAME and text in ['r', 'p', 's']: 
@@ -104,7 +102,6 @@ def process_message(message):
         send_message(f"{result}")
 
         send_message("Would you like to continue? y/n")
-        
     elif sender_id == my_user_id and PLAY_GAME and text in ['y', 'n']:
         if text == 'n':
             send_message("Let's play again some other time!")
