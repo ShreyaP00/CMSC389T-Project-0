@@ -54,20 +54,20 @@ To deactivate the virtual environment, run `deactivate`
 
 We have provided you with an outline of the bot in [`bot.py`](./groupme-bot/bot.py) that is able to read/send messages to the GroupMe chat. Your task is to implement the following features:
 
-- [ ] respond to you
+- [x] respond to you
   - you should be able to run your script and send a message in the GroupMe chat and have your bot respond to you and **only you**, meaning that if someone else sends the same message, **even with the same name**, your bot should not respond to them
     - hint: look at the [`sample.json`](./groupme-bot/sample.json) that shows what other fields you can extract from a response (i.e. `sender_id`)
     - you can view the contents of a response itself by printing `response.json().get("response", {})` located [here](./groupme-bot/bot.py#L31)(this is what is inside the `response` field of the `sample.json` file)
-- [ ] good morning/good night
+- [x] good morning/good night
   - if *anyone* says good morning/good night, your bot should respond with a good morning/good night with their name
     - i.e. if someone says "good morning", your bot should respond with "good morning, <name>"
     - think about how you're going to stop your bot from responding to itself and the other bots in the chat
     - **caution:** if you start spamming the chat, please `ctrl+c` your script to stop it
     - feel free to mute the chat, we will use piazza for any important announcements
-- [ ] create 1 (or more, for extra-credit) additional features that you think would be cool
+- [x] create 1 (or more, for extra-credit) additional features that you think would be cool
   - you may incorporate other API's (i.e. [Giphy](https://developers.giphy.com/docs/api/endpoint#search))
   - you can have the bot perhaps have tell the weather of a particular city
-- [ ] create a doc (markdown, `*.md` file) that outlines the features of your bot, how to run it
+- [x] create a doc (markdown, `*.md` file) that outlines the features of your bot, how to run it
   - please put this file in the [`groupme-bot`](./groupme-bot) folder and name it `README.md`
   - refer to markdown syntax [here](https://www.markdownguide.org/basic-syntax/)
 
