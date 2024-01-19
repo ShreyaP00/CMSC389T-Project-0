@@ -84,8 +84,6 @@ def process_message(message):
             user_choice = 'paper'
         elif user_entered == 's':
             user_choice = 'scissors'
-        else:
-            user_choice = 'invalid'
             
         send_message(f"Your choice: {user_choice}\nMy choice: {bot_choice}")
         result = winner(user_choice, bot_choice)
@@ -102,12 +100,10 @@ def process_message(message):
     
     LAST_MESSAGE_ID = message["id"]
 
-# determine winner 
+# determine winner of the game
 def winner(player, bot):
     if player == bot:
         return "We tied!"
-    elif (player == 'invalid'):
-        return "Invalid choice!"
         
     elif (player == 'rock' and bot == 'scissors') or \
          (player == 'paper' and bot == 'rock') or \
