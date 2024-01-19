@@ -68,11 +68,11 @@ def process_message(message):
         sender_name = message.get("name", "Unknown")
         send_message(f"Good night, {sender_name}!")
     
-    elif "play" in text:
-        send_message("Okay! Let's play Rock-Paper-Scissors\nEnter r for rock, p for paper, or s for scissors: ")
+    elif sender_id == my_user_id and "play" in text:
+        send_message("Okay! Let's play Rock-Paper-Scissors\nEnter: \nr for rock\np for paper\ns for scissors: ")
         PLAY_GAME = True
     
-    elif PLAY_GAME and text in ['r', 'p', 's']: 
+    elif sender_id == my_user_id and PLAY_GAME and text in ['r', 'p', 's']: 
         user_entered = text
         choices = ['rock', 'paper', 'scissors']
         bot_choice = random.choice(choices)
@@ -83,8 +83,6 @@ def process_message(message):
             user_choice = 'paper'
         elif user_entered == 's':
             user_choice = 'scissors'
-        else:
-            user_choice = 'invalid'
         
         send_message(f"Your choice: {user_choice}\nMy choice: {bot_choice}")
         result = winner(user_choice, bot_choice)
@@ -92,12 +90,12 @@ def process_message(message):
 
         send_message("Would you like to continue? y/n")
     
-    elif PLAY_GAME and text in ['y', 'n']:
+    elif sender_id == my_user_id and PLAY_GAME and text in ['y', 'n']:
         if text == 'n':
             send_message("Let's play again some other time!")
             PLAY_GAME = False
         else:
-            send_message("Great! Let's play another round. \nEnter 'r' for rock, 'p' for paper, or 's' for scissors.")
+            send_message("Great! Let's play another round. \nEnter: \nr for rock\np for paper\ns for scissors.")
     
     LAST_MESSAGE_ID = message["id"]
 
@@ -105,10 +103,7 @@ def process_message(message):
 def winner(player, bot):
     if player == bot:
         return "We tied!"
-
-    elif player == 'invalid':
-        return "Invalid choice!"
-
+    
     elif (player == 'rock' and bot == 'scissors') or \
          (player == 'paper' and bot == 'rock') or \
          (player == 'scissors' and bot == 'paper'):
