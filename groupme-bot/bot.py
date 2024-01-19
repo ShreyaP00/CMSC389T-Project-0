@@ -82,7 +82,8 @@ def process_message(message):
         send_message(f"Good night, {sender_name}!")
     
     elif sender_id == my_user_id and "play" in text:
-        send_message("Okay! Let's play Rock-Paper-Scissors\nPlease enter r for rock, p for paper, or s for scissors: ")
+        send_message("Okay! Let's play Rock-Paper-Scissors"
+                     "\nEnter: \nr for rock \np for paper \ns for scissors")
         PLAY_GAME = True
     
     elif sender_id == my_user_id and PLAY_GAME and text in ['r', 'p', 's']: 
