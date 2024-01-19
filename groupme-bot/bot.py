@@ -10,8 +10,21 @@ load_dotenv()
 BOT_ID = os.getenv("BOT_ID")
 GROUP_ID = os.getenv("GROUP_ID")
 ACCESS_TOKEN = os.getenv("ACCESS_TOKEN")
+LAST_MESSAGE_ID_FILE = "last_message_id.txt"  # New line for the file path
 LAST_MESSAGE_ID = None
 PLAY_GAME = False
+
+
+def save_last_msg_id(message_id):
+    with open(LAST_MESSAGE_ID_FILE, "w") as file:
+        file.write(str(message_id))
+
+
+def load_last_msg_id():
+    if os.path.exists(LAST_MESSAGE_ID_FILE):
+        with open(LAST_MESSAGE_ID_FILE, "r") as file:
+            return int(file.read().strip())
+    return None
 
 
 def send_message(text, attachments=None):
@@ -67,59 +80,67 @@ def process_message(message):
     elif "good night" in text:
         sender_name = message.get("name", "Unknown")
         send_message(f"Good night, {sender_name}!")
-    
+
+    # Play a Rock-Paper-Scissors game with the user
     elif sender_id == my_user_id and "play" in text:
-        send_message("Okay! Let's play Rock-Paper-Scissors\nEnter: \nr for rock\np for paper\ns for scissors: ")
+        send_message("Okay! Let's play Rock-Paper-Scissors\n"
+                     "Enter:\nr for rock\np for paper\ns for scissors: ")
         PLAY_GAME = True
     
     elif sender_id == my_user_id and PLAY_GAME and text in ['r', 'p', 's']: 
         user_entered = text
         choices = ['rock', 'paper', 'scissors']
         bot_choice = random.choice(choices)
-    
+
         if user_entered == 'r':
             user_choice = 'rock'
         elif user_entered == 'p':
             user_choice = 'paper'
         elif user_entered == 's':
             user_choice = 'scissors'
-        
+            
         send_message(f"Your choice: {user_choice}\nMy choice: {bot_choice}")
         result = winner(user_choice, bot_choice)
         send_message(f"{result}")
 
         send_message("Would you like to continue? y/n")
-    
+        
     elif sender_id == my_user_id and PLAY_GAME and text in ['y', 'n']:
         if text == 'n':
             send_message("Let's play again some other time!")
             PLAY_GAME = False
         else:
-            send_message("Great! Let's play another round. \nEnter: \nr for rock\np for paper\ns for scissors.")
+            send_message("Great! Let's play another round.\n"
+                         "Enter:\nr for rock\np for paper\ns for scissors")
     
     LAST_MESSAGE_ID = message["id"]
+    save_last_msg_id(LAST_MESSAGE_ID)
 
-# determines winner of the game
+# determine winner of the game
 def winner(player, bot):
     if player == bot:
         return "We tied!"
-    
+        
     elif (player == 'rock' and bot == 'scissors') or \
          (player == 'paper' and bot == 'rock') or \
          (player == 'scissors' and bot == 'paper'):
          return "You win!"
-    
     else:
         return "I win!"
 
 def main():
     global LAST_MESSAGE_ID
-    # this is an infinite loop that will try to read (potentially) new messages every 10 seconds, but you can change this to run only once or whatever you want
+    
+    LAST_MESSAGE_ID = load_last_msg_id()
+
+    # this is an infinite loop that will try to read (potentially) 
+    # new messages every 5 seconds, but you can change this to run 
+    # only once or whatever you want
     while True:
         messages = get_group_messages(LAST_MESSAGE_ID)
         for message in reversed(messages):
             process_message(message)
-        time.sleep(10)
+        time.sleep(5)
 
 
 if __name__ == "__main__":
